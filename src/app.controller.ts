@@ -11,9 +11,12 @@ import { AuthExceptionFilter } from './common/filters/auth-exceptions.filter';
 
 export class AppController {
   @Get('/')
-  @Render('login')
-  index(@Request() req): { message: string } {
-    return { message: req.flash('loginError') };
+  // @Render('login')
+  index(@Request() req, @Res() res) {
+    if (req.user){
+      return res.redirect('/home');
+    }
+    return res.render('login', {message: req.flash('loginError') });
   }
 
   @UseGuards(LoginGuard)
